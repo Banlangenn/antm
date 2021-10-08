@@ -1,4 +1,4 @@
-/* md5: ba4d8559cd54b7563ccd4f466feb7ef5 */
+/* md5: 6d7772d2b6e759f72b32ed90a61dbf2a */
 /* Rap仓库ModuleId: 479543 */
 
 interface XY {
@@ -84,7 +84,7 @@ interface IList {
   name: string;
   /**
    * 我是id
-   * @value #id
+   * @value /@id
    */
   id: number;
 }
