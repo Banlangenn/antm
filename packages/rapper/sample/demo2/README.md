@@ -1,23 +1,29 @@
-#  0.0.1 版本
+
+# v0.0.3
+>#  ---  他来了
 
 
----
+```ts
+ function createFetch<REQ extends Record<string, unknown>, RES extends {data: any}> (url: string, method: string) {
+      return  <T extends boolean = false>(
+        data: REQ,
+        options?: {
+          proxy?: T
+          pageError?: boolean
+        }
+      ): Promise<T extends true ? RES['data'] : RES> => {
+        return instance(
+          {
+            url,
+            method,
+            data,
+          },
+          options
+        )
+      }
+    }
+    ```
+    
 
-##  先看  过程
 
-1. 读取config
-
-2. 请求接口获取  接口描述 json 数据
-
-3. 把拿到的rap 模块信息  接口信息交给 config
-
-4. 输出文件 完成
-
----
-
-
-##  看代码
-
----
-
-##  看demo 效果
+    

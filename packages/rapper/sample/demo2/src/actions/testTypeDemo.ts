@@ -1,15 +1,4 @@
-/* md5: 60e841b1b8db26ea36e20ea5ea157247 */
-/* Rap仓库id: 284428 */
-/* eslint-disable */
-/* tslint:disable */
-// @ts-nocheck
-
-/**
- * 本文件由 Rapper 同步 Rap 平台接口，自动生成，请勿修改
- * Rap仓库 地址: http://rap2.taobao.org/repository/editor?id=284428&mod=477847
- */
-
-import type {IReqUser, IResUser, IReqUserType, IResUserType} from './types/testTypeDemo'
+/* Rap仓库ModuleId: 479543 */ 
 
 /* eslint-disable */
 /* tslint:disable */
@@ -17,44 +6,41 @@ import type {IReqUser, IResUser, IReqUserType, IResUserType} from './types/testT
 
 import instance from '@/utils/request'
 
-/**
- * 接口名：我是描述
- * Rap 地址: http://rap2.taobao.org/repository/editor?id=284428&mod=477847&itf=2081705
- */
-
-export const user = <T extends boolean = false>(
-  data: IReqUser,
-  options?: {
-    proxy?: T
-    pageError?: boolean
+function createFetch<REQ extends Record<string, unknown>, RES extends {data: any}> (url: string, method: string) {
+  return  <T extends boolean = false>(
+    data: REQ,
+    options?: {
+      proxy?: T
+      pageError?: boolean
+    }
+  ): Promise<T extends true ? RES['data'] : RES> => {
+    return instance(
+      {
+        url,
+        method,
+        data,
+      },
+      options
+    )
   }
-): Promise<T extends true ? IReqUser['data'] : IReqUser> =>
-  instance(
-    {
-      url: '/c/b/w/api/2.0/user',
-      method: 'GET',
-      data,
-    },
-    options
-  )
+}
+
+import type { IUserInfo, IResGoodsAudit, getRouters } from "@/actions/types/testTypeDemo.ts";
+  
+/**
+ * 接口名：结口1
+ * Rap 地址: http://rap2.taobao.org/repository/editor?id=284428&mod=479543&itf=2091281
+ */
+export const iUserInfoTestTypeDemo = createFetch<IUserInfo['request'], IUserInfo['response']>("/c/b/w/api/1.0/user", "GET");
 
 /**
- * 接口名：我是描述2
- * Rap 地址: http://rap2.taobao.org/repository/editor?id=284428&mod=477847&itf=2081706
+ * 接口名：接口2
+ * Rap 地址: http://rap2.taobao.org/repository/editor?id=284428&mod=479543&itf=2091282
  */
+export const iResGoodsAuditTestTypeDemo = createFetch<IResGoodsAudit['request'], IResGoodsAudit['response']>("/c/b/w/api/1.0/user/9", "POST");
 
-export const userType = <T extends boolean = false>(
-  data: IReqUserType,
-  options?: {
-    proxy?: T
-    pageError?: boolean
-  }
-): Promise<T extends true ? IReqUserType['data'] : IReqUserType> =>
-  instance(
-    {
-      url: '/c/b/w/api/1.0/user/type',
-      method: 'GET',
-      data,
-    },
-    options
-  )
+/**
+ * 接口名：我是刚刚新建的接口
+ * Rap 地址: http://rap2.taobao.org/repository/editor?id=284428&mod=479543&itf=2091284
+ */
+export const getRoutersTestTypeDemo = createFetch<getRouters['request'], getRouters['response']>("/c/b/w/api/1.0/router/6", "POST");

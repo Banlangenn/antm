@@ -1,91 +1,127 @@
-/* md5: 6c395209930be77b7a3edb0f4798e868 */
-/* eslint-disable */
+/* md5: ba4d8559cd54b7563ccd4f466feb7ef5 */
+/* Rap仓库ModuleId: 479543 */
 
-/**
- * 接口名：我是描述
- * Rap 地址: http://rap2.taobao.org/repository/editor?id=284428&mod=477847&itf=2081705
- */
-export type IReqUser = {
-  age: string
-  sex?: string
-  /**
-   * 新加的
-   */
-  goods?: {
-    arr: {
-      count: string
-      name: string
-    }
-  }
-  goods2: {
-    count: string
-    name: string
-  }
+interface XY {
+  x: number;
+  y: number;
+  z: number;
 }
 
-export type IResUser = {
+interface Shape {
+  size: number;
+}
+
+interface Circle {
+  shape: Shape;
+  point: XY;
+  radius: number;
+}
+
+type IGetRES<T> = {
+  data: T;
   /**
-   *
-   * @value true
-   */
-  success: boolean
-  data: {
+   * 成功
+   * @value  true
+   **/
+  success: boolean;
+};
+
+/**
+ *  结口1
+ * @url /c/b/w/api/1.0/user
+ * @method GET
+ * @rapUrl  http://rap2.taobao.org/repository/editor?id=284428&mod=479543&itf=2091281
+ */
+export type IUserInfo = {
+  request: {
+    age: string;
+    sex?: string;
+  };
+  response: {
     /**
-     * 数组演示
-     * @rule 5
+     *
+     * @value true
      */
-    array: {
+    success: boolean;
+    data: {
       /**
-       * n名称
-       * @value /@cname
+       * 数组演示
+       * @rule 5
        */
-      name: string
-      /**
-       * 年纪er
-       * @value /@increment(10)
-       */
-      age: string
-      /**
-       * 心别
-       * @value /@increment(10)
-       */
-      sex: number
-    }[]
-  }
+      array: {
+        /**
+         * 名称
+         * @value #cname
+         */
+        name: string;
+        /**
+         * 年纪
+         * @value \@increment(10)
+         */
+        age: string;
+        /**
+         * 性别
+         * @value \@increment(10)
+         */
+        sex: number;
+      }[];
+    };
+    /**
+     *
+     * @value 0
+     */
+    code: number;
+  };
+};
+
+export type IReqGoodsAudit = Record<string, unknown>;
+
+interface IList {
   /**
-   *
-   * @value 0
+   * 我是name
+   * @value #cname
    */
-  code: number
+  name: string;
+  /**
+   * 我是id
+   * @value #id
+   */
+  id: number;
 }
 
 /**
- * 接口名：我是描述2
- * Rap 地址: http://rap2.taobao.org/repository/editor?id=284428&mod=477847&itf=2081706
+ *  接口2
+ * @url /c/b/w/api/1.0/user/9
+ * @method POST
+ * @rapUrl  http://rap2.taobao.org/repository/editor?id=284428&mod=479543&itf=2091282
  */
-export type IReqUserType = {
-  shape: {
-    size: number
-  }
-  point: {
-    x: number
-    y: number
-    z: number
-  }
-  radius: number
-}
+export type IResGoodsAudit = {
+  request: Circle;
+  //
+  // response: IGetRES<Circle>;
+  // 修改
+  response: IGetRES<{
+    /**
+     * 我是列表
+     * @rule 23
+     */
+    list: IList[];
+    /**
+     * 总数
+     * @value 500
+     */
+    total: number;
+  }>;
+};
 
-export type IResUserType = {
-  data: {
-    shape: {
-      size: number
-    }
-    point: {
-      x: number
-      y: number
-      z: number
-    }
-    radius: number
-  }
-  success: boolean
-}
+// 新建
+/**
+ * 我是刚刚新建的接口
+ * @url /c/b/w/api/1.0/router/6
+ * @method POST
+ * @rapUrl  http://rap2.taobao.org/repository/editor?id=284428&mod=479543&itf=2091284
+ */
+export type getRouters = {
+  request: Circle;
+  response: IGetRES<Circle>;
+};
