@@ -8,22 +8,34 @@ Rapper 是 TypeScript 的最佳拍档，它可以帮你生成具有类型定义�
 
 
 
-## RapperPlus 是什么？
+## @antmjs/rapper 是什么？
 基于 Rapper 开发，使配置更灵活，同时增加本地类型同步远程文档重要功能
 - ++++
 - 本地接口类型上传到rapper远程文档，本地编码驱动远程文档
 - 自定义请求函数模板，满足不同编程规范
 
 ## 快速开始
+1. package.json scripts中 添加 
+{ "rap" : "npx rapper"}
 
-上传 34xx 模块 接口
-```bash
-$ npx rapper-plus --u --m 34xx
+2.  配置antm.config.js
+```js
+{
+  rapper: {
+    // 拉取接口地址
+    apiUrl?: string;
+    /** rap 前端地址，默认是 http://rap2.taobao.org */
+    rapUrl?: string;
+    // 生成的文件目录地址
+    rapperPath?: string;
+    // rap登录cookie
+    tokenCookie?: string;
+    // rap项目id
+    repositoryId?: number;
+  }
+}
 ```
-上下载 34xx 模块 接口
-```bash
-$ npx rapper-plus --d --m 34xx
-```
+
 
 >需要配合rapper使用
 
@@ -76,7 +88,7 @@ export type IUserInfo = {
 * --u  上传
 * --d  下载
 * --m xx  指定moduleId，不传默认提交更改的模块
-###  RapperPlus 配置config   有三种方案
+###  rapper 配置config   有三种方案
 
 * 方案一（推荐）
 
