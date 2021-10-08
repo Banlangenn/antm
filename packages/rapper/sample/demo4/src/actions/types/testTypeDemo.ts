@@ -1,4 +1,4 @@
-/* md5: 1c0e6b100e12ba184c2cb1246651d69e */
+/* md5: ba4d8559cd54b7563ccd4f466feb7ef5 */
 /* Rap仓库ModuleId: 479543 */
 
 interface XY {
@@ -50,18 +50,18 @@ export type IUserInfo = {
        */
       array: {
         /**
-         * n名称
+         * 名称
          * @value #cname
          */
         name: string;
         /**
-         * 年纪er
-         * @value /@increment(10)
+         * 年纪
+         * @value \@increment(10)
          */
         age: string;
         /**
-         * 心别
-         * @value /@increment(10)
+         * 性别
+         * @value \@increment(10)
          */
         sex: number;
       }[];

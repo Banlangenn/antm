@@ -25,13 +25,13 @@ function createFetch<REQ extends Record<string, unknown>, RES extends {data: any
   }
 }
 
-import type { IGoodsQbf, IResGoodsAudit, getRouters } from "@/actions/types/testTypeDemo.ts";
+import type { IUserInfo, IResGoodsAudit, getRouters } from "@/actions/types/testTypeDemo.ts";
   
 /**
  * 接口名：结口1
  * Rap 地址: http://rap2.taobao.org/repository/editor?id=284428&mod=479543&itf=2091281
  */
-export const iGoodsQbfTestTypeDemo = createFetch<IGoodsQbf['request'], IGoodsQbf['response']>("/c/b/w/api/1.0/user", "GET");
+export const iUserInfoTestTypeDemo = createFetch<IUserInfo['request'], IUserInfo['response']>("/c/b/w/api/1.0/user", "GET");
 
 /**
  * 接口名：接口2
