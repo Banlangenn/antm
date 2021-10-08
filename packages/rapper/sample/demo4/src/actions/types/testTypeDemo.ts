@@ -32,23 +32,10 @@ type IGetRES<T> = {
  * @method GET
  * @rapUrl  http://rap2.taobao.org/repository/editor?id=284428&mod=479543&itf=2091281
  */
-export type IGoodsQbf = {
+export type IUserInfo = {
   request: {
     age: string;
     sex?: string;
-    /**
-     * 新加的
-     */
-    goods?: {
-      arr: {
-        count: string;
-        name: string;
-      };
-    };
-    goods2: {
-      count: string;
-      name: string;
-    };
   };
   response: {
     /**

@@ -1,4 +1,3 @@
-[![MIT License][license-shield]][license-url]
 
 ## Rapper 是什么？
 
@@ -25,39 +24,83 @@ $ npx rapper-plus --u --m 34xx
 ```bash
 $ npx rapper-plus --d --m 34xx
 ```
+
+>需要配合rapper使用
+
+rapper 名称对应 介绍
+
+* 暂时不支持url带path参数
+### rapper接口字段名称对应 
+```ts
+export type IUserInfo = {
+  request: { // (1)
+    age?: string; //(2)
+  };
+  response: { // (3)
+    /**
+     *
+     * @value true 
+     */
+    success: boolean;
+    data: {
+      /**
+       * 数组演示 // (4)
+       * @rule 123 // (6)
+       */
+      array: {
+        /**
+         * 名称
+         * @value #cname // (5)
+         */
+         name: string;
+      }[];
+    };
+  };
+};
+```
+
+以下是rapper中含义
+* 1 [request] 请求参数定义;
+* 2 [age?: string] 入参定义字段名称，必选，类型;
+* 3 [response] 返回数据定义;
+* 4 [jsDoc 描述： 数组演示] 字段简介
+* 5 [jsDoc 关键字：@value #cname] 字段初始值
+* 6 [jsDoc 关键字：@rule 123] 字段生成规则
+
+> 注意 jsDoc 关键字的值中【@】符号由于转义问题需要替换成【#】
 ## 文档
+
 
 ### 命令函入参会和config合并（命令行优先级更高）
 
 * --u  上传
 * --d  下载
-* --m xx  指定moduleId，不传默认全部
+* --m xx  指定moduleId，不传默认提交更改的模块
 ###  RapperPlus 配置config   有三种方案
 
 * 方案一（推荐）
 
-  通过rapperPlus.config.js配置config
+  通过antm.config.js配置config
 
     ```js
-    <!-- rapperPlus.config.js文件 -->
-    const RapperPlus = require('rapper-plus')
-    <!--  使用RapperPlus 提供 defineConfig 会有类型提示 -->
-    export.default = RapperPlus.defineConfig({
+    <!-- antm.config.js文件 -->
+    const antmRapper = require('@antmjs/rapper')
+    <!--  使用antm 提供 defineConfig 会有类型提示 -->
+    export.default = antmRapper.defineConfig({
       upload: { xx: xx }, // 本地上传 配置
-      download: { xx: xx } // 远程下载 配置
     })
     ```
 * 方案二
     通过 命令行参数执行config 路径
     ```bash
-      $ npx rapper-plus --config  ./config/index.js
+      $ npx rapper --config  ./config/index.js
     ```
    
     ```js
     <!-- ./config/index.js文件 -->
-    const RapperPlus = require('rapper-plus')
-    <!--  使用RapperPlus 提供 defineConfig 会有类型提示 -->
-    export.default = RapperPlus.defineConfig({
+    const antmRapper = require('@antmjs/rapper')
+    <!--  antmRapper 提供 defineConfig 会有类型提示 -->
+    export.default = antmRapper.defineConfig({
       upload: { xx: xx }, // 本地上传 配置
       download: { xx: xx } // 远程下载 配置
     })
@@ -66,18 +109,20 @@ $ npx rapper-plus --d --m 34xx
 
 
 * 方案三
-  通过 package.json 配置 rapper-Plus 
+  通过 package.json 配置 antm.rapper
 
 
     ```js
     <!--package.json  文件  -->
     {
-      'rapper-Plus': {
-        upload: { xx: xx }, // 本地上传 配置
-        download: { xx: xx } // 远程下载 配置
+      'antm': {
+      'rapper': {
+        'upload': { xx: xx }, // 本地上传 配置
       }
     }
+    }
     ```
+
 
 ## 本地代码类型同步到远程raper文档
 * 解析本地文件
@@ -93,47 +138,100 @@ $ npx rapper-plus --d --m 34xx
 ## config 接口类型
 ```ts
 
+
 interface IConfig {
-    download: {
-        requestFunc?: (params: {
-            funcDescription: string;
-            repositoryId: number;
-            moduleId: number;
-            interfaceId: number;
-            requestUrl: string;
-            requestMethod: string;
-            rapUrl: string;
-        }) => {
-            reqTypeName: string;
-            resTypeName: string;
-            funcMain: string
-        };
-        requestModule?: (params: {
-            repositoryId: number;
-            moduleId: number;
-            moduleRapUrl: string;
-            moduleDescription: string
-        }) => {
-            fileName: string;
-            moduleHeader: string;
-        };
-        moduleId?: number;
-    }
-    rapper: {
-      // 拉取接口地址
-      apiUrl?: string;
-      /** rap 前端地址，默认是 http://rap2.taobao.org */
-      rapUrl?: string;
-      matchDir?: string;
-      tokenCookie?:string;
-      repositoryId?: number,
-    },
-     upload: {
-        formatFunc?: (params: IFuncInfo) => ITypeName;
-        moduleId?: number;
-        alias?: Record<string, string>;
-    }
-    __completion?: boolean
+  // 下载配置
+  download: {
+    /**
+     *
+     * @param params   rap上填入接口的信息
+     * @returns
+     * reqTypeName: request类型名称;
+     * resTypeName: response类型名称;
+     * funcMain: 请求函数体;
+     */
+    requestFunc?: (params: {
+      funcDescription: string;
+      repositoryId: number;
+      moduleId: number;
+      interfaceId: number;
+      requestUrl: string;
+      requestMethod: string;
+      rapUrl: string;
+    }) => {
+      reqTypeName: string;
+      resTypeName: string;
+      funcMain: string;
+    };
+    /**
+     *
+     * @param params   rap 上填入的module信息
+     * @returns
+     * fileName: 模块的文件名称;
+     * moduleHeader: 模块头部的banner;
+     */
+    requestModule?: (params: {
+      repositoryId: number;
+      moduleId: number;
+      moduleRapUrl: string;
+      moduleDescription: string;
+    }) => {
+      fileName: string;
+      moduleHeader: string;
+    };
+    // 自定下载的module
+    moduleId?: number;
+  };
+  rapper: {
+    // 拉取接口地址
+    apiUrl?: string;
+    /** rap 前端地址，默认是 http://rap2.taobao.org */
+    rapUrl?: string;
+    // 生成的文件目录地址
+    rapperPath?: string;
+    // rap登录cookie
+    tokenCookie?: string;
+    // rap项目id
+    repositoryId?: number;
+  };
+  upload: {
+    //  模式 type 文件扫描入口是type（需要编译生成fetch)
+    //  fetch 文件扫描入口是fetch请求函数（不需要编译）
+    mode?: 'type' | 'fetch';
+    // 需要解析的文件名称正则
+    fileRegex?: string;
+    /**
+     *
+     * @param params  函数信息
+     * @returns
+     *  resTypeName: request 类型名称;
+     * reqTypeName: response  类型名称;
+     * reqUrl: 请求 url;
+     * reqMethod: 请求method;
+     * interfaceId: 接口id;
+     */
+    formatFunc?: (params: {
+      funcName: string;
+      body: string;
+      comment: string;
+      // 三种函数 定义 会被选中到导出
+      funcType: 'CallExpression' | 'FunctionDeclaration' | 'ArrowFunction';
+    }) => {
+      resTypeName: string;
+      reqTypeName: string;
+      reqUrl: string;
+      reqMethod: string;
+      interfaceId: number;
+    } | null;
+    // 指定下载的 模块id
+    moduleId?: number;
+    // webpack 别名
+    alias?: Record<string, string>;
+  };
+  // 内部标识使用 不用管
+  __completion?: boolean;
+  // 是不是上传
+  isUpload: boolean;
 }
 
 
@@ -144,93 +242,115 @@ export type IOptions = Partial<IConfig>
 ## defaultConfig 会和传进来的config合并补全
 
 ```js
-    const defaultOptions = {
-      download: {
-        //请求 function 模板
-        requestFunc(params) {
-          function getFnName(url: string): null | string {
-            const fnName = url.match(/\/([.a-z0-9_-]+)\/([a-z0-9_-]+$)/i);
-            if (fnName && fnName.length === 3) {
-              if (/^\d+\.\d+$/.test(fnName[1])) {
-                return fnName[2];
-              }
-              return fnName[1] + fnName[2].charAt(0).toUpperCase() + fnName[2].slice(1);
+   const defaultOptions = {
+    download: {
+      //请求 function 模板
+      requestFunc(params) {
+        function getFnName(url: string): null | string {
+          const fnName = url.match(/\/([.a-z0-9_-]+)\/([a-z0-9_-]+$)/i);
+          if (fnName && fnName.length === 3) {
+            if (/^\d+\.\d+$/.test(fnName[1])) {
+              return fnName[2];
             }
-            return null;
+            return fnName[1] + fnName[2].charAt(0).toUpperCase() + fnName[2].slice(1);
           }
-          const fnName = getFnName(params.requestUrl);
-          if (!fnName) {
-            throw new TypeError('接口路径不对,请修改合规');
-          }
-          const camelCaseName = `${fnName.charAt(0).toUpperCase()}${fnName.slice(1)}`;
-          const paramsType = `IReq${camelCaseName}`;
-          const returnType = `IRes${camelCaseName}`;
-          return {
-            paramsType,
-            returnType,
-            funcMain: `
+          return null;
+        }
+        const fnName = getFnName(params.requestUrl);
+        if (!fnName) {
+          throw new TypeError('接口路径不对,请修改合规');
+        }
+        const camelCaseName = `${fnName.charAt(0).toUpperCase()}${fnName.slice(1)}`;
+        const reqTypeName = `IReq${camelCaseName}`;
+        const resTypeName = `IRes${camelCaseName}`;
+        return {
+          reqTypeName,
+          resTypeName,
+          funcMain: `
               /**
                * 接口名：${params.funcDescription}
                * Rap 地址: ${params.rapUrl}?id=${params.repositoryId}&mod=${params.moduleId}&itf=${params.interfaceId}
                */
-              export const ${fnName} = <T extends boolean = false>(
-                data: ${paramsType},
-                options?: {
-                  proxy?: T
-                  pageError?: boolean
-                }
-              ): Promise<IResType<T, ${returnType}>> => {
-                
-                return instance(
-                  {
-                    url: '${params.requestUrl}',
-                    method: '${params.requestMethod}',
-                    data,
-                  },
-                  options
-                ) as Promise<any>
-              }
+              export const ${fnName} = createFetch<${reqTypeName}, ${resTypeName}>('${params.requestUrl}', '${params.requestMethod}')
               `,
-          };
-        },
-        //请求 函数共工头（用于引入函数
-        requestModule(params) {
-          return {
-            fileName: params.moduleDescription,
-            moduleHeader: `
-            import instance from '@/utils/request'
-          
-            type IResType<T extends boolean, U extends {data: any}> = T extends true ? U['data'] : U
-          
-            `,
-          };
-        },
-        rap: {
-          apiUrl:
-            'http://rap2api.taobao.org/repository/get?id=284428&token=TTDNJ7gvXgy9R-9axC-7_mbi4ZxEPlp6',
-          /** rap 前端地址，默认是 http://rap2.taobao.org */
-          rapUrl: 'http://rap2.taobao.org',
-          rapperPath: './src/actions',
-        },
+        };
       },
-      upload: {
-        // 根据函数信息 过滤出 有用信息
-        formatFunc(params) {
-          return {
-            returnType: params.returnType.match(/T,\s*(\w+)>>$/)[1],
-            paramsType: params.paramsType[0].data,
-            fetchUrl: params.comment.match(/http:\/\/rap2\.tao[\s\S]+&itf=\d+/)[0],
-          };
-        },
-        // webpack 别名 alias 绝对路径
-        alias: {
-          '@': './src',
-        },
-        // 上传 token
-        tokenCookie:
-          'aliyungf_tc=ed5eefe153b8cd6d7a9b0ea3f4aaaa92eaf022825c19857a2b435978264d17d8; koa.sid=MzB5TnJaGWkQK6DL7MAFt_qp18DfQ41Q; koa.sid.sig=ujNSfud5538kuHWTx0zYRHXnDSU',
-        //会递归遍历啊所有附和 当前文件的 文件
-        matchDir: './src/actions',
-      }
+      //请求 函数共工头（用于引入函数
+      requestModule(params) {
+        return {
+          fileName: params.moduleDescription,
+          moduleHeader: `
+/* eslint-disable */
+/* tslint:disable */
+// @ts-nocheck
+
+import instance from '@/utils/request'
+
+function createFetch<REQ extends Record<string, unknown>, RES extends {data: any}> (url: string, method: string) {
+  return  <T extends boolean = false>(
+    data: REQ,
+    options?: {
+      proxy?: T
+      pageError?: boolean
     }
+  ): Promise<T extends true ? RES['data'] : RES> => {
+    return instance(
+      {
+        url,
+        method,
+        data,
+      },
+      options
+    )
+  }
+}
+`,
+        };
+      },
+    },
+    rapper: {
+      // 拉取接口地址
+      apiUrl:
+        'http://rap2api.taobao.org/repository/get?id=284428&token=TTDNJ7gvXgy9R-9axC-7_mbi4ZxEPlp6',
+      /** rap 前端地址，默认是 http://rap2.taobao.org */
+      rapUrl: 'http://rap2.taobao.org',
+
+      rapperPath: './src/actions',
+      tokenCookie:
+        'aliyungf_tc=f3a5915db08fc3b6de3ec5df0d0b3a5dc07c0b701e44cf4bf98a855799570bfe; koa.sid=2I353u8TTwtrHSdPXdJ9t8Mx5lTOeQFV; koa.sid.sig=D4vYLNcryQ8vcU4GkJJknTi_Fm8',
+      repositoryId: 284428,
+    },
+    upload: {
+      mode: 'type' as const,
+      // fileRegex 将尝试使用绝对文件路径检测测试文件
+      // (/__tests__/.*|(\\.|/)(test|spec))\\.[jt]sx?$
+      fileRegex: './src/actions/types/.*(js|jsx|ts|tsx)',
+
+      formatFunc(params) {
+        // createFetch<IReqGoodsQbf, IResGoodsQbf>('/c/api/1.0/approve/goods/qbf', 'GET')
+        // export const goodsQbf = createFetch<IGoodsQbf['request'], IGoodsQbf['response']>("/c/api/1.0/approve/goods/qbf", "GET");
+        const [_, reqTypeName, resTypeName, reqUrl, reqMethod] =
+          params.body.match(
+            /createFetch<([\w\[\]'"]+),\s+([\w\[\]'"]+)>\(['"]([\s\S]+)['"], ['"]([a-zA-Z]+)['"]\)/,
+          ) || [];
+        if (!reqTypeName || !resTypeName) {
+          return null;
+        }
+        const matchInterfaceId = params.comment.match(/http:\/\/rap2\.tao[\s\S]+&itf=(\d+)/);
+        return {
+          resTypeName,
+          reqTypeName,
+          // 如果返回 null '' undefined 0 等 就会被认为是新的接口，会触发上rap操作
+          interfaceId: matchInterfaceId ? Number(matchInterfaceId[1]) : null,
+          reqUrl: reqUrl,
+          reqMethod: reqMethod,
+        };
+      },
+      // webpack 别名 alias 绝对路径
+      alias: {
+        '@': './src',
+      },
+    },
+    isUpload: true,
+  };
     ```
