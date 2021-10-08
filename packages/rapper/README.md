@@ -47,7 +47,7 @@ Rapper 是 TypeScript 的最佳拍档，它可以帮你生成具有类型定义�
 ```ts
 export type IUserInfo = {
   request: { // (1)
-    age?: string; //(2)
+    age?: string; // (2)
   };
   response: { // (3)
     /**
