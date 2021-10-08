@@ -1,6 +1,6 @@
 {
-  "name": "rapplus",
-  "version": "1.2.2",
+  "name": "@antmjs/rapper",
+  "version": "0.0.2",
   "description": "rapper, use http api as a function",
   "main": "./dist/index.js",
   "scripts": {
@@ -14,7 +14,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/Banlangenn/rapperplus"
+    "url": "https://github.com/AntmJS/antm/blob/main/packages/rapper"
   },
   "keywords": [
     "api",
@@ -22,12 +22,11 @@
     "rapper",
     "typescript"
   ],
-  "author": "chibing.fy",
+  "author": "banlangenn",
   "license": "ISC",
   "files": [
     "dist",
-    "README.md",
-    "CHANGELOG.md"
+    "README.md"
   ],
   "publishConfig": {
     "registry": "http://registry.npmjs.org"

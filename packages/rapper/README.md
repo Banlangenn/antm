@@ -35,14 +35,15 @@ Rapper 是 TypeScript 的最佳拍档，它可以帮你生成具有类型定义�
   }
 }
 ```
+3. 开始写你的ts接口类型, 然后执行 npm run rap
 
 
->需要配合rapper使用
 
-rapper 名称对应 介绍
+## rapper 名称对应 接口ts类型介绍
 
+>ts接口类型需要配合rapper使用
 * 暂时不支持url带path参数
-### rapper接口字段名称对应 
+> rapper接口字段名称对应 
 ```ts
 export type IUserInfo = {
   request: { // (1)
@@ -79,7 +80,9 @@ export type IUserInfo = {
 * 5 [jsDoc 关键字：@value #cname] 字段初始值
 * 6 [jsDoc 关键字：@rule 123] 字段生成规则
 
-> 注意 jsDoc 关键字的值中【@】符号由于转义问题需要替换成【#】
+> 注意 jsDoc 关键字的值中【@】符号由于转义问题需要替换成【#】或者【\@】或者【/@】
+
+
 ## 文档
 
 

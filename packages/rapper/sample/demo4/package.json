@@ -1,6 +1,0 @@
-{
-    "scripts": {
-        "ts-rap": "ts-node ./../../src/models.ts",
-        "rap": "node ./../../dist/models.js"
-    }
-}
